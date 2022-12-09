@@ -20,5 +20,5 @@ public class customerDetails
     [Required]
     public string customerAddress { get; set; }
 
-    public customerOrders customerOrders { get; set; }
+    public orderDetails customerOrders { get; set; }
 }
