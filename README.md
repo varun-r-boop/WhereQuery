@@ -1,2 +1,0 @@
-# FinalProject
-Home Services Application
