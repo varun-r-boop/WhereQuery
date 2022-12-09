@@ -1,6 +1,8 @@
 ﻿using Final.Entities;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 public class customerDetails
 {
@@ -12,7 +14,8 @@ public class customerDetails
     [Required]
     public string customerEmail { get; set; }
     [Required]
-    public DateOnly customerDob { get; set; }
+    [Column(TypeName = "date")]
+    public DateTime customerDob { get; set; }
     [Required]
     public string customerPassword { get; set; }
     [Required]

@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.VisualBasic;
+using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Final.Entities
 {
@@ -6,8 +9,10 @@ namespace Final.Entities
     {
         [Key]
         public int ordersId { get; set; }
-        public DateOnly appointmentDate { get; set; }
-        public TimeOnly appointmentTime { get; set; }
+
+        [Column(TypeName = "date")]
+        public DateTime appointmentDate { get; set; }
+      //  public DateAndTime appointmentTime { get; set; }
 
         public ICollection<customerDetails> customerDetails { get; set; }
         public ICollection<providerDetails> providerDetails { get; set; }
