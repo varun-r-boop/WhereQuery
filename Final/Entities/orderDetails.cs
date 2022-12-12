@@ -14,7 +14,7 @@ namespace Final.Entities
         public DateTime appointmentDate { get; set; }
       //  public DateAndTime appointmentTime { get; set; }
 
-        public ICollection<customerDetails> customerDetails { get; set; }
+        public ICollection<Customer> customerDetails { get; set; }
         public ICollection<providerDetails> providerDetails { get; set; }
         public orderStatus orderStatus { get; set; }
         

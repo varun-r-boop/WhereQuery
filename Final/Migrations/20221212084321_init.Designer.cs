@@ -4,6 +4,7 @@ using Final.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Final.Migrations
 {
     [DbContext(typeof(HomezillaContext))]
-    partial class HomezillaContextModelSnapshot : ModelSnapshot
+    [Migration("20221212084321_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,6 +31,9 @@ namespace Final.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("customerOrdersordersId")
+                        .HasColumnType("int");
+
                     b.Property<string>("email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -40,8 +46,9 @@ namespace Final.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("orderDetailsordersId")
-                        .HasColumnType("int");
+                    b.Property<string>("passwordHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("userName")
                         .IsRequired()
@@ -49,7 +56,7 @@ namespace Final.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("orderDetailsordersId");
+                    b.HasIndex("customerOrdersordersId");
 
                     b.ToTable("customer");
                 });
@@ -134,9 +141,13 @@ namespace Final.Migrations
 
             modelBuilder.Entity("Customer", b =>
                 {
-                    b.HasOne("Final.Entities.orderDetails", null)
+                    b.HasOne("Final.Entities.orderDetails", "customerOrders")
                         .WithMany("customerDetails")
-                        .HasForeignKey("orderDetailsordersId");
+                        .HasForeignKey("customerOrdersordersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("customerOrders");
                 });
 
             modelBuilder.Entity("Final.Entities.providerDetails", b =>

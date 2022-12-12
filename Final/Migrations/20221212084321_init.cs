@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Final.Migrations
 {
     /// <inheritdoc />
-    public partial class init3 : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -26,23 +26,22 @@ namespace Final.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "customerDetails",
+                name: "customer",
                 columns: table => new
                 {
-                    customerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    customerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    customerEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    customerDob = table.Column<DateTime>(type: "date", nullable: false),
-                    customerPassword = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    customerMobile = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    customerAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    firstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    lastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    userName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    passwordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     customerOrdersordersId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_customerDetails", x => x.customerId);
+                    table.PrimaryKey("PK_customer", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_customerDetails_orderDetails_customerOrdersordersId",
+                        name: "FK_customer_orderDetails_customerOrdersordersId",
                         column: x => x.customerOrdersordersId,
                         principalTable: "orderDetails",
                         principalColumn: "ordersId",
@@ -92,8 +91,8 @@ namespace Final.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_customerDetails_customerOrdersordersId",
-                table: "customerDetails",
+                name: "IX_customer_customerOrdersordersId",
+                table: "customer",
                 column: "customerOrdersordersId");
 
             migrationBuilder.CreateIndex(
@@ -111,7 +110,7 @@ namespace Final.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "customerDetails");
+                name: "customer");
 
             migrationBuilder.DropTable(
                 name: "providerServices");

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Final.Migrations
 {
     [DbContext(typeof(HomezillaContext))]
-    [Migration("20221209093439_init3")]
-    partial class init3
+    [Migration("20221212091818_entity")]
+    partial class entity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,38 @@ namespace Final.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Customer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("customerOrdersordersId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("firstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("lastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("userName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("customerOrdersordersId");
+
+                    b.ToTable("customer");
+                });
 
             modelBuilder.Entity("Final.Entities.orderDetails", b =>
                 {
@@ -103,43 +135,15 @@ namespace Final.Migrations
                     b.ToTable("providerServices");
                 });
 
-            modelBuilder.Entity("customerDetails", b =>
+            modelBuilder.Entity("Customer", b =>
                 {
-                    b.Property<Guid>("customerId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.HasOne("Final.Entities.orderDetails", "customerOrders")
+                        .WithMany("customerDetails")
+                        .HasForeignKey("customerOrdersordersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<string>("customerAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("customerDob")
-                        .HasColumnType("date");
-
-                    b.Property<string>("customerEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("customerMobile")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("customerName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("customerOrdersordersId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("customerPassword")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("customerId");
-
-                    b.HasIndex("customerOrdersordersId");
-
-                    b.ToTable("customerDetails");
+                    b.Navigation("customerOrders");
                 });
 
             modelBuilder.Entity("Final.Entities.providerDetails", b =>
@@ -158,17 +162,6 @@ namespace Final.Migrations
                         .IsRequired();
 
                     b.Navigation("providerDetails");
-                });
-
-            modelBuilder.Entity("customerDetails", b =>
-                {
-                    b.HasOne("Final.Entities.orderDetails", "customerOrders")
-                        .WithMany("customerDetails")
-                        .HasForeignKey("customerOrdersordersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("customerOrders");
                 });
 
             modelBuilder.Entity("Final.Entities.orderDetails", b =>
