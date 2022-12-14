@@ -12,7 +12,7 @@ public class JwtMiddleware
         _next = next;
     }
 
-    public async Task Invoke(HttpContext context, ICustomerService customerService, IJwtUtils jwtUtils, HomezillaContext _context)
+    public async Task Invoke(HttpContext context, IAuthService customerService, IJwtUtils jwtUtils, HomezillaContext _context)
     {
         var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
         var userId = jwtUtils.ValidateToken(token);
