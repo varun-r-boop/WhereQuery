@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Final.Authorization;
+using Final.Entities;
 using Final.Helpers;
 using Final.Model.Auth;
-using Final.Model.Customers;
 using Final.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
@@ -12,7 +12,7 @@ using Stripe;
 
 namespace Final.Controllers
 {
-    
+
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
@@ -38,8 +38,9 @@ namespace Final.Controllers
             try
             {
             var response = _authService.Authenticate(model);
+                
                 HttpContext.Response.Headers.Add("Authorization", response.Token);
-                return Ok("Login Successful");
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -49,6 +50,7 @@ namespace Final.Controllers
         }
 
         
+
         [HttpPost("register")]
         public IActionResult Register(RegisterRequest model)
         {

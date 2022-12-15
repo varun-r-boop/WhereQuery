@@ -3,7 +3,6 @@ using Final.Authorization;
 using Final.Data;
 using Final.Helpers;
 using Final.Model.Auth;
-using Final.Model.Customers;
 using Microsoft.AspNetCore.Mvc;
 using Org.BouncyCastle.Crypto.Generators;
 using System.Security.Cryptography;
@@ -11,7 +10,7 @@ using Stripe;
 
 namespace Final.Services
 {
-    
+
     public class AuthService : IAuthService
     {
         private HomezillaContext _context;
@@ -59,8 +58,6 @@ namespace Final.Services
             // hash password
             var salt = BCrypt.Net.BCrypt.GenerateSalt(10);
             user.passwordHash = BCrypt.Net.BCrypt.HashPassword(model.password, salt);
-
-            // send verification mail
 
             user.OTP = GenerateOtp();
             user.OTPExpiresAt = DateTime.Now.AddMinutes(30);
@@ -131,6 +128,8 @@ namespace Final.Services
             request.Token = null;
             await _context.SaveChangesAsync();
         }
+
+        //OTP Generation
 
         private Customer GetUserByOtp(string otp)
         {
