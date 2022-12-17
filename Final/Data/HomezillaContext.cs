@@ -17,18 +17,19 @@ public partial class HomezillaContext : DbContext
     {
     }
 
+
     //Creating DbSet
 
     public DbSet<Customer> customer { get; set; }
     public DbSet<orderDetails> orderDetails { get; set; }
-  
+
 
     public DbSet<providerDetails> providerDetails { get; set; }
 
-    public DbSet<providerServices> providerServices { get; set; }  
+    public DbSet<providerServices> providerServices { get; set; }
 
 
-    
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         OnModelCreatingPartial(modelBuilder);

@@ -4,6 +4,8 @@
     {
         Waiting,
         Accepted,
-        Declined
+        Declined,
+        NoResponse,
+        Delivered
     }
 }

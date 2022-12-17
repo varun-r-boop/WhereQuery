@@ -7,7 +7,7 @@ namespace Final.Entities
         [Key]
        public Guid id { get; set; }
 
-       public providerDetails providerDetails { get; set; }
+       public providerDetails? ProviderDetails { get; set; }
 
        public serviceList serviceList { get; set; }
 

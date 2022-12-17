@@ -8,15 +8,18 @@ namespace Final.Entities
     public class orderDetails
     {
         [Key]
-        public int ordersId { get; set; }
-
+        public Guid OrdersId { get; set; }
+        public string? OrderName { get; set; }
+        public string? OrderDescription { get; set; }
+        public int? OrderPrice { get; set; }
         [Column(TypeName = "date")]
         public DateTime appointmentDate { get; set; }
       //  public DateAndTime appointmentTime { get; set; }
-
-        public ICollection<Customer> customerDetails { get; set; }
-        public ICollection<providerDetails> providerDetails { get; set; }
+        public ICollection<providerDetails>? ProviderDetails { get; set; }
         public orderStatus orderStatus { get; set; }
-        
+
+        [ForeignKey("CustomerId")]
+        public Guid Id { get; set; }
+        public Customer customer { get; set; }  
     }
 }

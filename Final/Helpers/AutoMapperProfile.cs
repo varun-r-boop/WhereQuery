@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Final.Entities;
 using Final.Model.Auth;
+using Final.Model.CustomerDashboard;
 
 namespace Final.Helpers
 {
@@ -7,11 +9,15 @@ namespace Final.Helpers
     {
         public AutoMapperProfile()
         {
-            // User -> AuthenticateResponse
+            // Customer -> AuthenticateResponse
             CreateMap<Customer, AuthenticateResponse>();
 
-            // RegisterRequest -> User
+            // RegisterRequest -> Customer
             CreateMap<RegisterRequest, Customer>();
+
+            CreateMap<CustomerDetailsRequest, Customer>();
+
+            CreateMap<orderDetails, OrderDetailsResponse>();
 
         }
     }

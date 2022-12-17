@@ -16,6 +16,7 @@ builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSet
 // configure DI for application services
 builder.Services.AddScoped<IJwtUtils, JwtUtils>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ICustomerDashboardService, CustomerDashboardService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {

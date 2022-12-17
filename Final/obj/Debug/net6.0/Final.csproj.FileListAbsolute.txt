@@ -100,3 +100,14 @@ C:\Users\varun\source\repos\FinalProject\Final\bin\Debug\net6.0\BCrypt.Net-Next.
 C:\Users\varun\source\repos\FinalProject\Final\bin\Debug\net6.0\Scrutor.dll
 C:\Users\varun\source\repos\FinalProject\Final\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.dll
 C:\Users\varun\source\repos\FinalProject\Final\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.Abstractions.dll
+C:\Users\varun\source\repos\FinalProject\Final\bin\Debug\net6.0\AutoMapper.Collection.dll
+C:\Users\varun\source\repos\FinalProject\Final\bin\Debug\net6.0\AutoMapper.Collection.EntityFramework.dll
+C:\Users\varun\source\repos\FinalProject\Final\bin\Debug\net6.0\AutoMapper.Extensions.ExpressionMapping.dll
+C:\Users\varun\source\repos\FinalProject\Final\bin\Debug\net6.0\EntityFramework.SqlServer.dll
+C:\Users\varun\source\repos\FinalProject\Final\bin\Debug\net6.0\EntityFramework.dll
+C:\Users\varun\source\repos\FinalProject\Final\bin\Debug\net6.0\System.Data.SqlClient.dll
+C:\Users\varun\source\repos\FinalProject\Final\bin\Debug\net6.0\runtimes\win-arm64\native\sni.dll
+C:\Users\varun\source\repos\FinalProject\Final\bin\Debug\net6.0\runtimes\win-x64\native\sni.dll
+C:\Users\varun\source\repos\FinalProject\Final\bin\Debug\net6.0\runtimes\win-x86\native\sni.dll
+C:\Users\varun\source\repos\FinalProject\Final\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\varun\source\repos\FinalProject\Final\bin\Debug\net6.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
