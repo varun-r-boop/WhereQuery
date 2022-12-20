@@ -18,8 +18,8 @@ namespace Final.Entities
         public string? Description { get; set; }
 
         public providerServices[] ProviderService { get; set; }
-
-        [ForeignKey("ProviderUserID")]
+        [ForeignKey("Provider")]
+        public Guid ProviderUserID { get; set; }
         public virtual Authentication Provider { get; set; }
 
     }

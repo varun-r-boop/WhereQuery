@@ -48,13 +48,13 @@ namespace Final.Services
         }
 
 
-        public async Task Register(RegisterRequest request)
+        public void Register(RegisterRequest request)
         {
             // validate
            
                 
-           // if(_context.authentications.Any(x => x.Email == request.email))
-          //  {
+            if(! _context.authentications.Any(x => x.Email == request.email))
+            {
                 _user = _mapper.Map<Authentication>(request);
                 
                 _user.createdAt = DateTime.Now;
@@ -67,40 +67,48 @@ namespace Final.Services
                 _user.OTP = GenerateOtp();
                 _user.OTPExpiresAt = DateTime.Now.AddMinutes(30);
                 _user.verifiedAt = DateTime.MinValue;
-            _context.Add(_user);
-            _context.SaveChanges();
-            var rr = await _context.authentications.ToListAsync();
-            Console.WriteLine(rr);
-            Console.WriteLine("okkkk");
 
+             _context.authentications.Add(_user);
+             _context.SaveChanges();
+            
+           
             if (request.UserRole == "customer")
                 {
                     Customer customer = new();
-                    var res= await _context.authentications.Where(x => x.Email == request.email).FirstOrDefaultAsync();
+               
+                var res = _context.authentications.Where(x => x.Email == request.email).FirstOrDefault();
+                
                     customer.CustomerUserID= res.AuthId;
                     customer.firstName = request.firstName;
                     customer.lastName = request.lastName;
                     customer.email = request.email;
                     customer.userName= request.userName;
-                    _context.customer.Add(customer);
-                
+                  _context.customer.Add(customer);
+                    _context.SaveChanges();
+
+
                 }
                 else
                 {
                     providerDetails provider = new();
-                  //_user = await _context.authentications.Where(x => x.Email == request.email).FirstOrDefaultAsync();
-                    provider.ProviderId = _user.AuthId;
+                  var res = _context.authentications.Where(x => x.Email == request.email).FirstOrDefault();
+                    provider.ProviderUserID= res.AuthId;
                     provider.ProviderFirstName = request.firstName;
                     provider.ProviderLastName = request.lastName;
+                provider.ProviderEmail = request.email;
                     _context.providerDetails.Add(provider);
                     _context.SaveChanges();
-                
+
+
+                }
+            
+
+             }
+            else
+            {
+                throw new KeyNotFoundException("Email already registered");
             }
-            _context.SaveChanges();
-
-
-            // }
-            // throw new KeyNotFoundException("Email already registered");
+             
 
 
         }
@@ -191,5 +199,6 @@ namespace Final.Services
             return result!;
         }
         
+        }
     }
-}
+

@@ -52,11 +52,11 @@ namespace Final.Controllers
         
 
         [HttpPost("register")]
-        public IActionResult Register(RegisterRequest model)
+        public IActionResult Register(RegisterRequest request)
         {
             try
             {
-                _authService.Register(model);
+                _authService.Register(request);
                 return Ok(new { message = "Verify your account to login" });
             }
             catch (Exception ex)
