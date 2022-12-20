@@ -18,6 +18,7 @@ public class JwtMiddleware
         var userId = jwtUtils.ValidateToken(token);
         if (userId != null)
         {
+            Console.WriteLine(userId);
             // attach user to context on successful jwt validation
             context.Items["User"] = await _context.customer.FindAsync(userId);  
         }

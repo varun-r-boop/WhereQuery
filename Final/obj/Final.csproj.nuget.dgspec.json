@@ -89,6 +89,14 @@
               "target": "Package",
               "version": "[4.2.2, )"
             },
+            "MimeKit": {
+              "target": "Package",
+              "version": "[3.4.3, )"
+            },
+            "NETCore.MailKit": {
+              "target": "Package",
+              "version": "[2.1.0, )"
+            },
             "Portable.BouncyCastle": {
               "target": "Package",
               "version": "[1.9.0, )"

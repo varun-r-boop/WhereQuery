@@ -15,6 +15,7 @@ namespace Final.Helpers
             // RegisterRequest -> Customer
             CreateMap<RegisterRequest, Authentication>();
 
+            CreateMap<Customer, CustomerDetailsRequest>();
             CreateMap<CustomerDetailsRequest, Customer>();
 
             CreateMap<orderDetails, OrderDetailsResponse>();

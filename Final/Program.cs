@@ -2,6 +2,7 @@ using Final.Authorization;
 using Final.Data;
 using Final.Helpers;
 using Final.Services;
+using Final.MailServices;
 
 using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.Filters;
@@ -14,6 +15,7 @@ builder.Services.AddAutoMapper(typeof(Program));
 // configure strongly typed settings object
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 // configure DI for application services
+builder.Services.AddScoped<IMailService, MailService>();    
 builder.Services.AddScoped<IJwtUtils, JwtUtils>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ICustomerDashboardService, CustomerDashboardService>();

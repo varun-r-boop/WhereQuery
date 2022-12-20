@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Identity;
 using static System.Net.WebRequestMethods;
 using System.Runtime.Intrinsics.X86;
 using Microsoft.EntityFrameworkCore;
+using Final.MailServices;
+
 
 namespace Final.Services
 {
@@ -22,15 +24,19 @@ namespace Final.Services
         private IJwtUtils _jwtUtils;
         private readonly IMapper _mapper;
         private Authentication _user = new();
+        private readonly IMailService _mailer;
+        private static MailTemplates mailTemplate = new MailTemplates();
 
         public AuthService(
             HomezillaContext context,
             IJwtUtils jwtUtils,
-            IMapper mapper)
+            IMapper mapper,
+            IMailService mailer)
         {
             _context = context;
             _jwtUtils = jwtUtils;
             _mapper = mapper;
+            _mailer = mailer;
         }
 
         public AuthenticateResponse Authenticate(AuthenticateRequest model)
@@ -143,7 +149,12 @@ namespace Final.Services
             if (user == null) throw new BadHttpRequestException("User not found");
 
             user.OTP = GenerateOtp();
+            Console.WriteLine(user.OTP);
             user.OTPExpiresAt = DateTime.Now.AddMinutes(5);
+            Console.WriteLine(user.OTPExpiresAt);
+            string template = mailTemplate.GetPasswordResetTemplate(user.OTP, 10);
+            await _mailer.Send(user.Email, "Password Reset Email Send", template);
+            Console.WriteLine("jjjjjjjjjjj");
             _context.authentications.Update(user);
             await _context.SaveChangesAsync();
         }

@@ -23,6 +23,8 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Owin.Cors" Version="4.2.2" />
     <PackageReference Include="Microsoft.Owin.Security.OAuth" Version="4.2.2" />
+    <PackageReference Include="MimeKit" Version="3.4.3" />
+    <PackageReference Include="NETCore.MailKit" Version="2.1.0" />
     <PackageReference Include="Portable.BouncyCastle" Version="1.9.0" />
     <PackageReference Include="Stripe.net" Version="41.2.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />

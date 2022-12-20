@@ -37,7 +37,7 @@ namespace Final.Services
         public async Task<CustomerDetailsRequest> GetById(Guid id)
         {
             var user = await _context.customer
-                .SingleOrDefaultAsync(x => x.Id == id);
+                .SingleOrDefaultAsync(x => x.CustomerUserID == id);
             if (user == null)
                 throw new KeyNotFoundException("User Not Found");
 
@@ -113,7 +113,7 @@ namespace Final.Services
 
         private Customer GetUserId(Guid id)
         {
-            return _context.customer.SingleOrDefault(x => x.Id == id);
+            return _context.customer.SingleOrDefault(x => x.CustomerUserID == id);
         }
 
 

@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace Final.Authorization
 {
@@ -17,25 +18,44 @@ namespace Final.Authorization
     public class JwtUtils : IJwtUtils
     {
         private readonly AppSettings _appSettings;
+        private readonly IConfiguration _config;
 
-        public JwtUtils(IOptions<AppSettings> appSettings)
+        public JwtUtils(IOptions<AppSettings> appSettings, IConfiguration config)
         {
             _appSettings = appSettings.Value;
+            _config = config;
         }
 
         public string GenerateToken(Authentication user)
         {
             // generate token that is valid for 7 days
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("AppSettings:Secret");
-            var tokenDescriptor = new SecurityTokenDescriptor
+            List<Claim> claims = new List<Claim>
             {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", user.AuthId.ToString()) }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, user.UserRole),
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim("id", user.AuthId.ToString())
+
             };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+
+            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
+                _config.GetSection("AppSettings:Token").Value));
+
+
+
+            var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+
+
+            var token = new JwtSecurityToken(
+                claims: claims,
+                expires: DateTime.Now.AddDays(1),
+                signingCredentials: cred
+                );
+
+            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return jwt;
         }
 
         public int? ValidateToken(string token)
