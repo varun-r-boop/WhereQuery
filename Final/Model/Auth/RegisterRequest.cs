@@ -16,9 +16,12 @@ namespace Final.Model.Auth
 
         [Required]
         public string? email { get; set; }
+        [Required]
+        public string? UserRole { get; set; }
 
         [Required]
         public string? password { get; set; }
+
 
         // [JsonIgnore]
         //public string passwordHash { get; set; }

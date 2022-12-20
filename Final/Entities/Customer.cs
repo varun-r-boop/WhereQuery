@@ -1,4 +1,5 @@
 ﻿using Final.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -24,27 +25,10 @@ public class Customer
 
     public string? Address { get; set; }
     public Role userRole { get; set; }
+    [ForeignKey("customer")]
+    public Guid CustomerUserID { get; set; }
+    public virtual Authentication customer { get; set; }
+    public virtual ProfilePicture? ProfilePicture { get; set; }
 
-    //Password Reset
-
-    public DateTime? createdAt { get; set; }
-    public DateTime? updatedAt { get; set; }
-    public bool isDeleted { get; set; }
-
-    public string? passwordHash { get; set; }
-
-    //public orderDetails customerOrders { get; set; }
-
-    //OTP verification
-
-    public string? OTP { get; set; }
-    public DateTime? OTPExpiresAt { get; set; }
-
-    //public byte[] rowVersion { get; set; }
-
-    //Verification
-    public DateTime? verifiedAt { get; set; }
-    public DateTime? passwordResetAt { get; set; }
-    public bool isVerified { get; set; }
 
 }

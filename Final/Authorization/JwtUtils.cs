@@ -1,4 +1,5 @@
-﻿using Final.Helpers;
+﻿using Final.Entities;
+using Final.Helpers;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -9,7 +10,7 @@ namespace Final.Authorization
 {
     public interface IJwtUtils
     {
-        public string GenerateToken(Customer user);
+        public string GenerateToken(Authentication user);
         public int? ValidateToken(string token);
     }
 
@@ -22,14 +23,14 @@ namespace Final.Authorization
             _appSettings = appSettings.Value;
         }
 
-        public string GenerateToken(Customer user)
+        public string GenerateToken(Authentication user)
         {
             // generate token that is valid for 7 days
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes("AppSettings:Secret");
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
+                Subject = new ClaimsIdentity(new[] { new Claim("id", user.AuthId.ToString()) }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };

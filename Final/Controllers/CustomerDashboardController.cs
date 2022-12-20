@@ -32,6 +32,7 @@ namespace Final.Controllers
         {
             await _customerDashboardService.UpdateCustomerProfile(request, id);
             return Ok(request);
+
         }
 
         [HttpPut("change-password")]
@@ -40,7 +41,7 @@ namespace Final.Controllers
             try
             {
                 await _customerDashboardService.ChangePassword(request);
-                return Ok(new { message = "Your Password has been changed successfully" });
+                return Ok(new { message = "Your Password has been changed successfully" } );
             }
             catch (Exception ex)
             {
@@ -61,6 +62,13 @@ namespace Final.Controllers
         {
             return Ok(await _customerDashboardService.GetPastOrders(id));
 
+     
         }
+
+     //   [HttpPost("upload-profile-picture")]
+       // public async Task<ActionResult> UploadProfilePicture(IFormFile formFile, Guid id)
+        //{
+         //   return Ok(await _customerDashboardService.UploadProfilePicture(formFile, id));
+       // }
     }
 }

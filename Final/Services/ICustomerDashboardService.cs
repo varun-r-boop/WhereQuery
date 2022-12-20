@@ -1,4 +1,5 @@
-﻿using Final.Model.CustomerDashboard;
+﻿using Final.Entities;
+using Final.Model.CustomerDashboard;
 
 namespace Final.Services
 {
@@ -9,5 +10,6 @@ namespace Final.Services
         Task UpdateCustomerProfile(CustomerDetailsRequest request, Guid id);
         Task<IEnumerable<OrderDetailsResponse>> GetCurrentOrders(Guid id);
         Task<IEnumerable<OrderDetailsResponse>> GetPastOrders(Guid id);
+      //  Task<ProfilePicture> UploadProfilePicture(IFormFile file, Guid id);
     }
 }

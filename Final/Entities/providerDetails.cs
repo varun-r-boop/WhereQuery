@@ -1,19 +1,26 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Final.Entities
 {
     public class providerDetails
     {
         [Key]
-        public  Guid providerId { get; set; }
-        public string? providerName { get; set; }
-        public string? providerEmail { get; set; }
-        public string? providerMobile { get; set; }
-        public string? providerPassword  { get; set; }
+        public  Guid ProviderId { get; set; }
+        public string? ProviderFirstName { get; set; }
+        public string? ProviderLastName { get; set; }
+        public string? ProviderEmail { get; set; }
+        public string? ProviderMobile { get; set; }
+        public string? ProviderPasswordHash  { get; set; }
 
-        public providerServices[] providerService { get; set; }
-        public string? location { get; set; }
-        public string? description { get; set; }
+       
+        public string? Location { get; set; }
+        public string? Description { get; set; }
+
+        public providerServices[] ProviderService { get; set; }
+
+        [ForeignKey("ProviderUserID")]
+        public virtual Authentication Provider { get; set; }
 
     }
 }

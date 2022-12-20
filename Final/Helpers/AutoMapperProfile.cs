@@ -10,10 +10,10 @@ namespace Final.Helpers
         public AutoMapperProfile()
         {
             // Customer -> AuthenticateResponse
-            CreateMap<Customer, AuthenticateResponse>();
+            CreateMap<Authentication, AuthenticateResponse>();
 
             // RegisterRequest -> Customer
-            CreateMap<RegisterRequest, Customer>();
+            CreateMap<RegisterRequest, Authentication>();
 
             CreateMap<CustomerDetailsRequest, Customer>();
 

@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Org.BouncyCastle.Crypto.Generators;
 using System.Security.Cryptography;
 using Stripe;
+using Final.Entities;
+using Microsoft.AspNetCore.Identity;
+using static System.Net.WebRequestMethods;
+using System.Runtime.Intrinsics.X86;
+using Microsoft.EntityFrameworkCore;
 
 namespace Final.Services
 {
@@ -16,6 +21,7 @@ namespace Final.Services
         private HomezillaContext _context;
         private IJwtUtils _jwtUtils;
         private readonly IMapper _mapper;
+        private Authentication _user = new();
 
         public AuthService(
             HomezillaContext context,
@@ -29,7 +35,7 @@ namespace Final.Services
 
         public AuthenticateResponse Authenticate(AuthenticateRequest model)
         {
-            var user = _context.customer.SingleOrDefault(x => x.email == model.email);
+            var user = _context.authentications.SingleOrDefault(x => x.Email == model.email);
 
             if(user == null || !user.isVerified || !BCrypt.Net.BCrypt.Verify(model.password,user.passwordHash) )
             {
@@ -42,29 +48,61 @@ namespace Final.Services
         }
 
 
-        public void Register(RegisterRequest model)
+        public async Task Register(RegisterRequest request)
         {
             // validate
-            if (_context.customer.Any(x => x.email == model.email))
-                throw new AppException("Email '" + model.email + "' is already taken");
+           
+                
+           // if(_context.authentications.Any(x => x.Email == request.email))
+          //  {
+                _user = _mapper.Map<Authentication>(request);
+                
+                _user.createdAt = DateTime.Now;
+                // user.verificationToken = _jwtUtils.GenerateToken(user);
 
-            // map model to new user object
-            var user = _mapper.Map<Customer>(model);
-            user.userRole = Entities.Role.customer;
+                // hash password
+                var salt = BCrypt.Net.BCrypt.GenerateSalt(10);
+                _user.passwordHash = BCrypt.Net.BCrypt.HashPassword(request.password, salt);
 
-            user.createdAt= DateTime.Now;
-           // user.verificationToken = _jwtUtils.GenerateToken(user);
-
-            // hash password
-            var salt = BCrypt.Net.BCrypt.GenerateSalt(10);
-            user.passwordHash = BCrypt.Net.BCrypt.HashPassword(model.password, salt);
-
-            user.OTP = GenerateOtp();
-            user.OTPExpiresAt = DateTime.Now.AddMinutes(30);
-            user.verifiedAt= DateTime.MinValue;
-            // save user
-            _context.customer.Add(user);
+                _user.OTP = GenerateOtp();
+                _user.OTPExpiresAt = DateTime.Now.AddMinutes(30);
+                _user.verifiedAt = DateTime.MinValue;
+            _context.Add(_user);
             _context.SaveChanges();
+            var rr = await _context.authentications.ToListAsync();
+            Console.WriteLine(rr);
+            Console.WriteLine("okkkk");
+
+            if (request.UserRole == "customer")
+                {
+                    Customer customer = new();
+                    var res= await _context.authentications.Where(x => x.Email == request.email).FirstOrDefaultAsync();
+                    customer.CustomerUserID= res.AuthId;
+                    customer.firstName = request.firstName;
+                    customer.lastName = request.lastName;
+                    customer.email = request.email;
+                    customer.userName= request.userName;
+                    _context.customer.Add(customer);
+                
+                }
+                else
+                {
+                    providerDetails provider = new();
+                  //_user = await _context.authentications.Where(x => x.Email == request.email).FirstOrDefaultAsync();
+                    provider.ProviderId = _user.AuthId;
+                    provider.ProviderFirstName = request.firstName;
+                    provider.ProviderLastName = request.lastName;
+                    _context.providerDetails.Add(provider);
+                    _context.SaveChanges();
+                
+            }
+            _context.SaveChanges();
+
+
+            // }
+            // throw new KeyNotFoundException("Email already registered");
+
+
         }
     
       
@@ -73,7 +111,7 @@ namespace Final.Services
         //verification
         public async Task Verify(string otp)
         {
-            var user = _context.customer.SingleOrDefault(x => x.OTP== otp);
+            var user = _context.authentications.SingleOrDefault(x => x.OTP== otp);
             if (user == null) throw new KeyNotFoundException("Invalid verification OTP");
             if(user.verifiedAt != DateTime.MinValue)
             {
@@ -91,14 +129,14 @@ namespace Final.Services
 
         public async Task ForgotPassword(ForgotPasswordRequest request)
         {
-            var user = _context.customer.SingleOrDefault(
-                x => (x.email == request.email) && !x.isDeleted);
+            var user = _context.authentications.SingleOrDefault(
+                x => (x.Email == request.email) && !x.isDeleted);
 
             if (user == null) throw new BadHttpRequestException("User not found");
 
             user.OTP = GenerateOtp();
             user.OTPExpiresAt = DateTime.Now.AddMinutes(5);
-            _context.customer.Update(user);
+            _context.authentications.Update(user);
             await _context.SaveChangesAsync();
         }
 
@@ -116,7 +154,7 @@ namespace Final.Services
             user.OTP = null;
             user.OTPExpiresAt = DateTime.MinValue;
 
-            _context.customer.Update(user);
+            _context.authentications.Update(user);
             await _context.SaveChangesAsync();
 
         }
@@ -131,9 +169,9 @@ namespace Final.Services
 
         //OTP Generation
 
-        private Customer GetUserByOtp(string otp)
+        private Authentication GetUserByOtp(string otp)
         {
-            return _context.customer.SingleOrDefault(x => x.OTP == otp);
+            return _context.authentications.SingleOrDefault(x => x.OTP == otp);
         }
 
         private string GenerateOtp()
@@ -142,5 +180,16 @@ namespace Final.Services
             int otp = random.Next(100000, 999999);
             return otp.ToString();
         }
+
+        public async Task<Authentication> GetUser(string email ="")
+        {
+            Authentication? result = new();
+            if(email != "")
+            {
+                result = await _context.authentications.Where(u => u.Email == email).FirstOrDefaultAsync();
+            }
+            return result!;
+        }
+        
     }
 }
